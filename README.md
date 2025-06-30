@@ -24,7 +24,7 @@ SecurityLog Guardian is a powerful yet simple tool that monitors your web server
 
 ```bash
 # Clone the repository
-git clone https://github.com/shadow1x0/securitylog-guardian.git
+git clone https://github.com/shadow1x0/securitylog_guardian.git
 cd securitylog-guardian
 
 # Install dependencies
