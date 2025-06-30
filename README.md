@@ -1,4 +1,4 @@
-[![Build](https://github.com/shadow1x0/securitylog-guardian/actions/workflows/ci.yml/badge.svg)](https://github.com/shadow1x0/securitylog-guardian/actions)
+[![Build](https://github.com/shadow1x0/securitylog_guardian/actions/workflows/ci.yml/badge.svg)](https://github.com/shadow1x0/securitylog_guardian/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 [![Python](https://img.shields.io/badge/python-3.8%2B-blue)](https://www.python.org/)
 
@@ -264,9 +264,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/shadow1x0/securitylog-guardian/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/shadow1x0/securitylog-guardian/discussions)
-- **Email**: your-email@example.com
+- **Issues**: [GitHub Issues](https://github.com/shadow1x0/securitylog_guardianissues)
+- **Discussions**: [GitHub Discussions](https://github.com/shadow1x0/securitylog_guardiandiscussions)
+- **Email**: None
 
 ---
 
