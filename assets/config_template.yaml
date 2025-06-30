@@ -1,0 +1,28 @@
+log_paths:
+  - data/logs/test_access.log
+  - /var/log/nginx/access.log
+  - /var/log/auth.log
+
+alert_threshold: 70
+notification:
+  telegram_token: "YOUR_TOKEN"
+  telegram_chat_id: "YOUR_CHAT_ID"
+  slack_webhook_url: "YOUR_SLACK_WEBHOOK_URL"
+  slack_channel: "#security-alerts"
+  smtp_server: "smtp.gmail.com"
+  smtp_port: 587
+  email_username: "your-email@gmail.com"
+  email_password: "your-app-password"
+  email_to: "admin@yourcompany.com"
+block_on_threshold: false
+whitelist:
+  - 127.0.0.1
+rate_limit:
+  count: 20
+  seconds: 60
+log_format: auto  # options: auto, nginx, iis, custom
+# log_regex: '^(?P<ip>\S+) ...'  # for custom
+custom_patterns:
+  my_custom_threat:
+    - "custompattern1"
+    - "custompattern2" 

@@ -1,0 +1,4 @@
+xss: 30
+sql: 40
+bruteforce: 25
+default: 10 

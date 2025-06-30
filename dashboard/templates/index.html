@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SecurityLog Guardian Dashboard</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #2563eb;
+            --secondary: #f1f5f9;
+            --danger: #e11d48;
+            --warning: #f59e42;
+            --success: #22c55e;
+            --info: #0ea5e9;
+            --dark: #1e293b;
+            --light: #f8fafc;
+        }
+        html, body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: var(--secondary);
+            margin: 0;
+            padding: 0;
+        }
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 24px 0 16px 0;
+            text-align: center;
+            box-shadow: 0 2px 8px rgba(37,99,235,0.08);
+        }
+        .header .logo {
+            font-size: 2.2rem;
+            font-weight: 700;
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+        }
+        .header .logo img {
+            width: 40px;
+            height: 40px;
+            vertical-align: middle;
+        }
+        .header .subtitle {
+            font-size: 1.1rem;
+            font-weight: 400;
+            margin-top: 6px;
+            color: #c7d2fe;
+        }
+        .container {
+            max-width: 1400px;
+            margin: 32px auto 0 auto;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px rgba(30,41,59,0.08);
+            padding: 32px 24px 24px 24px;
+        }
+        .stats {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            margin-bottom: 24px;
+            background: var(--light);
+            padding: 18px 0;
+            border-radius: 8px;
+        }
+        .stat-item {
+            flex: 1 1 120px;
+            text-align: center;
+            margin: 0 8px;
+        }
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .stat-label {
+            color: #64748b;
+            font-size: 1rem;
+        }
+        .filters {
+            background: var(--secondary);
+            padding: 18px 12px;
+            border-radius: 8px;
+            margin-bottom: 18px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+        }
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            min-width: 140px;
+        }
+        .filter-group label {
+            font-weight: 500;
+            color: var(--dark);
+            margin-bottom: 4px;
+        }
+        .filter-group input, .filter-group select {
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 4px;
+            font-size: 1rem;
+            background: var(--light);
+        }
+        .btn {
+            padding: 8px 18px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1rem;
+            margin: 2px;
+            transition: background 0.2s;
+        }
+        .btn-primary { background: var(--primary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-secondary { background: #64748b; color: white; }
+        .btn:hover { opacity: 0.9; }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 18px;
+            background: var(--light);
+        }
+        th, td {
+            border: 1px solid #e2e8f0;
+            padding: 12px 8px;
+            text-align: left;
+        }
+        th {
+            background: var(--primary);
+            color: white;
+            cursor: pointer;
+            font-size: 1.05rem;
+        }
+        th:hover { background: #1d4ed8; }
+        tr:nth-child(even) { background: #f1f5f9; }
+        tr:hover { background: #e0e7ef; }
+        .alert-type {
+            padding: 4px 10px;
+            border-radius: 3px;
+            font-size: 13px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+        .alert-type.xss { background: var(--danger); color: white; }
+        .alert-type.sql { background: var(--warning); color: white; }
+        .alert-type.bruteforce { background: var(--info); color: white; }
+        .alert-type.rate_limit { background: var(--success); color: white; }
+        pre {
+            background: #f8fafc;
+            padding: 8px;
+            border-radius: 3px;
+            font-size: 12px;
+            max-width: 320px;
+            overflow-x: auto;
+        }
+        .pagination {
+            margin-top: 24px;
+            text-align: center;
+        }
+        .pagination a, .pagination span {
+            padding: 8px 14px;
+            margin: 0 2px;
+            border: 1px solid #e2e8f0;
+            text-decoration: none;
+            color: var(--primary);
+            border-radius: 4px;
+        }
+        .pagination .current {
+            background: var(--primary);
+            color: white;
+            border-color: var(--primary);
+        }
+        .pagination a:hover { background: #e0e7ef; }
+        .footer {
+            margin-top: 40px;
+            text-align: center;
+            color: #64748b;
+            font-size: 1rem;
+            padding: 18px 0 8px 0;
+        }
+        @media (max-width: 900px) {
+            .container { padding: 10px; }
+            .filters { flex-direction: column; gap: 8px; }
+            .stats { flex-direction: column; gap: 8px; }
+        }
+        @media (max-width: 600px) {
+            .header .logo { font-size: 1.2rem; }
+            .container { padding: 2px; }
+            th, td { font-size: 0.95rem; }
+            .stat-number { font-size: 1.2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="https://img.icons8.com/ios-filled/50/ffffff/security-checked.png" alt="Shield Icon"/>
+            SecurityLog Guardian
+        </div>
+        <div class="subtitle">Smart, open-source log analyzer &amp; threat dashboard</div>
+    </div>
+    <div class="container">
+        <div class="stats">
+            <div class="stat-item">
+                <div class="stat-number">{{ pagination.total }}</div>
+                <div class="stat-label">Total Alerts</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ pagination.page }}</div>
+                <div class="stat-label">Current Page</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">{{ pagination.pages }}</div>
+                <div class="stat-label">Total Pages</div>
+            </div>
+        </div>
+        <div class="filters">
+            <form method="get" id="filterForm">
+                <div class="filter-group">
+                    <label>IP Address:</label>
+                    <select name="ip">
+                        <option value="">All IPs</option>
+                        {% for ip in unique_ips %}
+                        <option value="{{ ip }}" {% if ip == ip_filter %}selected{% endif %}>{{ ip }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Alert Type:</label>
+                    <select name="type">
+                        <option value="">All Types</option>
+                        {% for type in unique_types %}
+                        <option value="{{ type }}" {% if type == type_filter %}selected{% endif %}>{{ type }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date:</label>
+                    <input type="date" name="date" value="{{ date_filter }}">
+                </div>
+                <div class="filter-group">
+                    <label>Sort By:</label>
+                    <select name="sort">
+                        <option value="time" {% if sort_by == 'time' %}selected{% endif %}>Time</option>
+                        <option value="score" {% if sort_by == 'score' %}selected{% endif %}>Score</option>
+                        <option value="ip" {% if sort_by == 'ip' %}selected{% endif %}>IP</option>
+                        <option value="type" {% if sort_by == 'type' %}selected{% endif %}>Type</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Order:</label>
+                    <select name="order">
+                        <option value="desc" {% if sort_order == 'desc' %}selected{% endif %}>Descending</option>
+                        <option value="asc" {% if sort_order == 'asc' %}selected{% endif %}>Ascending</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>&nbsp;</label><br>
+                    <button type="submit" class="btn btn-primary">Filter</button>
+                    <a href="/" class="btn btn-secondary">Clear</a>
+                    <a href="/export?{{ request.query_string.decode() }}" class="btn btn-success">Export CSV</a>
+                </div>
+            </form>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th onclick="sortTable('time')">Time</th>
+                    <th onclick="sortTable('ip')">IP Address</th>
+                    <th onclick="sortTable('type')">Type</th>
+                    <th onclick="sortTable('score')">Score</th>
+                    <th>Method</th>
+                    <th>Path</th>
+                    <th>Status</th>
+                    <th>Log File</th>
+                    <th>Pattern</th>
+                    <th>Log Line</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for alert in pagination.alerts %}
+                <tr>
+                    <td>{{ alert.time }}</td>
+                    <td><strong>{{ alert.ip }}</strong></td>
+                    <td><span class="alert-type {{ alert.type }}">{{ alert.type }}</span></td>
+                    <td><strong>{{ alert.score }}</strong></td>
+                    <td>{{ alert.method or 'N/A' }}</td>
+                    <td>{{ alert.path or 'N/A' }}</td>
+                    <td>{{ alert.status or 'N/A' }}</td>
+                    <td>{{ alert.log }}</td>
+                    <td>{{ alert.pattern or 'N/A' }}</td>
+                    <td><pre>{{ alert.line }}</pre></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="10" style="text-align: center; padding: 40px;">No alerts found.</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        {% if pagination.pages > 1 %}
+        <div class="pagination">
+            {% if pagination.has_prev %}
+            <a href="?{{ request.query_string.decode() }}&page={{ pagination.page - 1 }}">&laquo; Previous</a>
+            {% endif %}
+            {% for p in range(1, pagination.pages + 1) %}
+                {% if p == pagination.page %}
+                <span class="current">{{ p }}</span>
+                {% else %}
+                <a href="?{{ request.query_string.decode() }}&page={{ p }}">{{ p }}</a>
+                {% endif %}
+            {% endfor %}
+            {% if pagination.has_next %}
+            <a href="?{{ request.query_string.decode() }}&page={{ pagination.page + 1 }}">Next &raquo;</a>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    <div class="footer">
+        &copy; 2025 SecurityLog Guardian &mdash; Open Source Security Monitoring<br>
+        <span style="font-size:0.95em;">Made with <span style="color:#e11d48;">&#10084;</span> for the security community</span>
+    </div>
+    <script>
+        function sortTable(column) {
+            const urlParams = new URLSearchParams(window.location.search);
+            urlParams.set('sort', column);
+            urlParams.set('order', urlParams.get('order') === 'asc' ? 'desc' : 'asc');
+            window.location.search = urlParams.toString();
+        }
+        setTimeout(function() {
+            window.location.reload();
+        }, 30000);
+    </script>
+</body>
+</html> 

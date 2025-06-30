@@ -1,0 +1,5 @@
+{
+  "xss": ["<script>", "alert\\(", "onerror="],
+  "sql": ["union select", "or 1=1", "drop table", "--"],
+  "bruteforce": ["POST /login", "403", "401"]
+} 

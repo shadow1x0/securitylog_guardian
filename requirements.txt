@@ -1,0 +1,13 @@
+# Core dependencies
+PyYAML>=6.0
+requests>=2.28.0
+
+# Dashboard dependencies (optional)
+Flask>=2.3.0
+
+# Development dependencies
+pytest>=7.0.0
+pytest-cov>=4.0.0
+
+# Optional: for better performance
+ujson>=5.0.0 
